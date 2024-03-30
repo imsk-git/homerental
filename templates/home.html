@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <title>Home Rental</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #53949b; /* Green background color */
+        }
+        .navbar-brand {
+            color: #fff; /* White color for brand text */
+        }
+        .nav-link {
+            color: #fff; /* White color for nav links */
+        }
+        .navbar-toggler {
+            border-color: #fff; /* White color for navbar toggler */
+        }
+        .navbar-toggler-icon {
+            background-color: #fff; /* White color for toggler icon */
+        }
+        .form-control {
+            border-color: #fff; /* White color for search input border */
+        }
+        .btn-outline-light {
+            color: #fff; /* White color for search button text */
+            border-color: #fff; /* White color for search button border */
+        }
+
+        /* Card Styling */
+        .card {
+            border: none; /* Remove card border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+            transition: 0.3s; /* Add transition */
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Change shadow on hover */
+        }
+        .card-title {
+            color: #333; /* Dark text color for card title */
+        }
+        .card-text {
+            color: #666; /* Medium text color for card text */
+        }
+        .btn-primary {
+            background-color: #53949b; /* Green background color for book now button */
+            border-color: #53949b; /* Green border color for book now button */
+        }
+        .btn-primary:hover {
+            background-color: #377279; /* Darker green on hover */
+            border-color: #377279; /* Darker green border on hover */
+        }
+    </style>
+</head>
+<body>
+
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand h1" href="#"><i class="fa fa-home" aria-hidden="true"></i></a>
+            <!-- Toggle button for small screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Navigation items -->
+                    <li class="nav-item">
+                        <a class="nav-link active h4" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active h4" aria-current="page" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active h4" aria-current="page" href="#">Contact</a>
+                    </li>
+                </ul>
+                
+                <!-- Search form -->
+                <form class="d-flex ">
+                    <input class="form-control me-2 ms-4" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light ms-4" type="submit">Search</button>
+                </form>
+                
+            </div>
+            <h5 class="ms-2">Hello, {{user}}</h5>
+        </div>
+        
+        <!-- Login button -->
+        {% if request.user.is_authenticated %}   
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+        {% endif %}
+    </nav>
+
+    <!-- Property Cards -->
+    <div class="container mt-4">
+        <div class="row">
+            {% for property in properties %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        {% if property.image %}
+                            <img src="{{property.image.url}}" alt="" class="img-fluid rounded mb-3">
+                        {% endif %}
+                        <h5 class="card-title"> <a href="{% url 'details' property.id %}" class="text-decoration-none">{{property.title}}</a> </h5>
+                        <p class="card-text">{{property.description}}</p>
+                        <a href="{% url 'book' property.id %}" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
